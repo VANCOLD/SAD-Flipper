@@ -8,7 +8,8 @@ public class ExitZustand implements Zustand {
 
     @Override
     public boolean pressStart() {
-        System.out.println("This game was created by: Florian Grafl, Raja Abdulhadi & Polak Rene :).\n Thanks for playing! ");
+        System.out.println("This game was created by: " +
+            "Florian Grafl, Raja Abdulhadi & Polak Rene :).\n Thanks for playing! ");
         return true;
     }
 }

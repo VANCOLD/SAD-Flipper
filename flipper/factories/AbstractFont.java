@@ -1,6 +1,6 @@
 package flipper.factories;
 
-public class AbstractFont implements FlipperFont{
+public class AbstractFont implements FlipperFont {
 
     private final String message;
 

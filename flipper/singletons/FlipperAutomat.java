@@ -22,12 +22,13 @@ public class FlipperAutomat {
     }
 
     public static FlipperAutomat createFlipperAutomat() {
-        return Objects.requireNonNullElseGet(FlipperAutomat.flipperAutomat, FlipperAutomat::new);
+        return Objects.requireNonNullElseGet(
+            FlipperAutomat.flipperAutomat, FlipperAutomat::new);
     }
 
     public void run() {
-        while( true ) {
-
+        while (true) {
+            System.out.println("test");
         }
     }
 }
