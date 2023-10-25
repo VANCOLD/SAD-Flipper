@@ -11,9 +11,9 @@ public class AbstractFlipperElement implements FlipperElement{
 
     public Integer scoreIncrease;
 
-    private HitCommand hitCommand;
+    private final HitCommand hitCommand;
 
-    private ScoreCommand scoreCommand;
+    private final ScoreCommand scoreCommand;
 
     public AbstractFlipperElement() {
         this(0);

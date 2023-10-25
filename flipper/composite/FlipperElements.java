@@ -10,9 +10,9 @@ import java.util.Random;
 
 public class FlipperElements implements FlipperElement{
 
-    private List<AbstractFlipperElement> children;
+    private final List<AbstractFlipperElement> children;
 
-    private Random rng;
+    private final Random rng;
 
     private Integer nextElementToHit;
 

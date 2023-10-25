@@ -10,7 +10,7 @@ public class Ramp extends AbstractFlipperElement implements Mediator {
 
     private Boolean interactable;
 
-    private List<AbstractFlipperElement> targets;
+    private final List<AbstractFlipperElement> targets;
 
     public Ramp(Integer scoreIncrease) {
         super(scoreIncrease);

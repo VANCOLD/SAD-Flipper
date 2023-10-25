@@ -4,7 +4,7 @@ import flipper.composite.FlipperElements;
 
 public class InteractCommand implements Command {
 
-    private FlipperElements target;
+    private final FlipperElements target;
 
     public InteractCommand(FlipperElements target) {
         this.target = target;
