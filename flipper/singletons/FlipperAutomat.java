@@ -18,12 +18,16 @@ public class FlipperAutomat {
     private FlipperAutomat() {
         this.credits = 0;
         this.spielZustand = new NoCreditZustand();
+        this.ioManager    = IOManager.createManager();
     }
 
     public static FlipperAutomat createFlipperAutomat() {
         return Objects.requireNonNullElseGet(FlipperAutomat.flipperAutomat, FlipperAutomat::new);
     }
 
-    public void start() {
+    public void run() {
+        while( true ) {
+
+        }
     }
 }
