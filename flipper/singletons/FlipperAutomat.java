@@ -3,6 +3,8 @@ package flipper.singletons;
 import flipper.composite.*;
 import flipper.enums.Inputs;
 import flipper.factories.FontFactory;
+import flipper.factories.fonts.GameOverFont;
+import flipper.factories.implementations.GameOverFontFactory;
 import flipper.factories.implementations.PinballFontFactory;
 import flipper.states.EndState;
 import flipper.states.NoCreditState;
@@ -25,9 +27,9 @@ public class FlipperAutomat {
 
     private Integer credits;
 
-    private IOManager ioManager;
+    private final IOManager ioManager;
 
-    private FlipperElements flipperElements;
+    private final FlipperElements flipperElements;
 
     private FontFactory fontFactory;
 
@@ -93,14 +95,17 @@ public class FlipperAutomat {
 
     public void run() throws InterruptedException {
 
-        if(FlipperAutomat.DEBUG)
-            System.out.println(this.flipperElements.toString());
+        if(FlipperAutomat.DEBUG) {
+            ioManager.printMessage("DEBUGGING ACTIVE");
+            ioManager.printMessage(this.flipperElements.toString());
+        }
 
         System.out.println();
-        System.out.println(this.fontFactory.createFont().getMessage());
-        System.out.println("The pinball machine lights up, you get all excited, a prompt flashes on it's screen, it reads:\n"+
-                            "Type credits to add credits to the machine\n" +
-                            "Type start to start a round of pinball (credits needed)");
+        ioManager.printMessage(this.fontFactory.createFont().getMessage());
+        ioManager.printMessage("""
+            The pinball machine lights up, you get all excited, a prompt flashes on it's screen, it reads:
+            Type credits to add credits to the machine
+            Type start to start a round of pinball (credits needed)""");
 
         while ( true ) {
 
@@ -133,7 +138,7 @@ public class FlipperAutomat {
                 }
 
                 case INVALID:
-                    System.out.println("INVALID INPUT!:\n");
+                    ioManager.printMessage("INVALID INPUT!:\n");
                 case HELP: {
                     this.gameState.help();
                     break;
@@ -147,8 +152,8 @@ public class FlipperAutomat {
 
         if(balls.isEmpty() && currentBall == null) {
 
-            System.out.println("Total game score: " + totalScore);
-            System.out.println("Game lost! Wanna try again?");
+            ioManager.printMessage("Total game score: " + totalScore);
+            ioManager.printMessage("Game lost! Wanna try again?");
             this.changeState(new EndState(this));
             this.totalScore  = 0;
             this.balls       = Ball.createBalls();
@@ -162,7 +167,7 @@ public class FlipperAutomat {
             this.currentBall =  this.balls.pop();
 
             this.fontFactory = currentBall.getFontFactory();
-            System.out.println(this.fontFactory.createFont().getMessage());
+            ioManager.printMessage(this.fontFactory.createFont().getMessage());
         }
 
         this.flipperElements.hit();
@@ -184,11 +189,13 @@ public class FlipperAutomat {
                 element.accept(resetVisitor);
             }
             this.totalScore += scoreVisitor.getScoreTotal();
-            System.out.println("Ball loss!");
-            System.out.println("Total score: " + scoreVisitor.getScoreTotal());
+            ioManager.printMessage("Ball loss!");
+            ioManager.printMessage("Total score: " + scoreVisitor.getScoreTotal());
+            this.fontFactory = new GameOverFontFactory();
+            ioManager.printMessage(this.fontFactory.createFont().getMessage());
 
             if(FlipperAutomat.DEBUG)
-                System.out.println(flipperElements.printCommandHistory());
+                ioManager.printMessage(flipperElements.printCommandHistory());
         }
 
         Thread.sleep(1000);

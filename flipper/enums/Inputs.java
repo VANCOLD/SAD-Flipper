@@ -4,7 +4,7 @@ public enum Inputs {
 
     CREDITS("credits"), START("start"), PRESS("press"), HELP("help"), EXIT("exit"), INVALID("");
 
-    private String input;
+    private final String input;
 
 
     Inputs(String input) {

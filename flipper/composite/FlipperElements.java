@@ -18,7 +18,7 @@ public class FlipperElements implements FlipperElement{
 
     private Integer nextElementToHit;
 
-    private CommandHistory commandHistory;
+    private final CommandHistory commandHistory;
 
 
     public FlipperElements() {
@@ -31,15 +31,6 @@ public class FlipperElements implements FlipperElement{
 
     public void add(AbstractFlipperElement element) {
         this.children.add(element);
-    }
-
-    public void remove(AbstractFlipperElement element) {
-
-        if(this.children.contains(element)) {
-            this.children.remove(element);
-        } else {
-            throw new NoSuchElementException("Flipper element not found inside flipper!");
-        }
     }
 
     public List<AbstractFlipperElement> getChildren() {
@@ -66,24 +57,25 @@ public class FlipperElements implements FlipperElement{
 
     @Override
     public String toString() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         for(AbstractFlipperElement element : this.children) {
-            output += element.toString() + "\n";
+            output.append(element.toString()).append("\n");
         }
 
-        return output;
+        return output.toString();
     }
 
     public String printCommandHistory() {
 
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         for(AbstractCommand command : this.commandHistory.getCommandList()) {
-            output += "[COMMAND]: " + this.commandHistory.getCommandList().indexOf(command) + "# "
-                + command.getClass().getSimpleName() +" interacted with " + command.getTarget().getClass().getSimpleName()  + "\n";
+            output.append("[COMMAND]: ").append(this.commandHistory.getCommandList().indexOf(command))
+                .append("# ").append(command.getClass().getSimpleName()).append(" interacted with ")
+                .append(command.getTarget().getClass().getSimpleName()).append("\n");
         }
 
-        return output;
+        return output.toString();
     }
 }

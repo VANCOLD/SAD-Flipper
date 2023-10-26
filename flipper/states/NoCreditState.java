@@ -20,9 +20,10 @@ public class NoCreditState extends AbstractState {
 
     @Override
     public void help() {
-        System.out.println("Type start to signify that you want to get ready to play\n" +
-                           "Type credits to add more credits to the pinball machine\n"  +
-                           "Type exit to quit playing and get your credits back");
+        System.out.println("""
+            Type start to signify that you want to get ready to play
+            Type credits to add more credits to the pinball machine
+            Type exit to quit playing and get your credits back""");
     }
 
     @Override

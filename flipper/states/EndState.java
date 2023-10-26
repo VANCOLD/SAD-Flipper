@@ -19,9 +19,10 @@ public class EndState extends AbstractState {
 
     @Override
     public void help() {
-        System.out.println("Type start to start a round.\n" +
-                           "Type credits to add another credit to the machine.\n" +
-                           "Type exit to quit the game");
+        System.out.println("""
+            Type start to start a round.
+            Type credits to add another credit to the machine.
+            Type exit to quit the game""");
     }
 
     @Override

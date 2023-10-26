@@ -15,7 +15,4 @@ public abstract class AbstractCommand implements Command {
         return target;
     }
 
-    public void setTarget(AbstractFlipperElement target) {
-        this.target = target;
-    }
 }

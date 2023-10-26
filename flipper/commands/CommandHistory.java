@@ -18,13 +18,4 @@ public class CommandHistory {
         this.commandList.add(command);
     }
 
-    public void removeCommand(AbstractCommand command) {
-        int lastCommand = this.commandList.lastIndexOf(command);
-        this.commandList.remove(lastCommand);
-    }
-
-    public void setCommandList(List<AbstractCommand> commandList) {
-        this.commandList = commandList;
-    }
-
 }

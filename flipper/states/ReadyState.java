@@ -17,9 +17,10 @@ public class ReadyState extends AbstractState {
 
     @Override
     public void help() {
-        System.out.println("Type start to start a round.\n" +
-                            "Type credits to add another credit to the machine.\n" +
-                            "Type exit to get your credits back and exit the game!");
+        System.out.println("""
+            Type start to start a round.
+            Type credits to add another credit to the machine.
+            Type exit to get your credits back and exit the game!""");
     }
 
     @Override

@@ -4,7 +4,7 @@ import flipper.singletons.FlipperAutomat;
 
 public abstract class AbstractState implements State {
 
-    protected FlipperAutomat flipperAutomat;
+    protected final FlipperAutomat flipperAutomat;
 
     public AbstractState(FlipperAutomat flipperAutomat) {
         this.flipperAutomat = flipperAutomat;
