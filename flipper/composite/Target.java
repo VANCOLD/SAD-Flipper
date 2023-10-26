@@ -14,6 +14,6 @@ public class Target extends AbstractFlipperElement {
     @Override
     public void hit() {
         super.hit();
-        this.mediator.notify(this, this.hit);
+        this.mediator.notify(this, this.ledsOn);
     }
 }

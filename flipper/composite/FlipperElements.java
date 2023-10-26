@@ -1,5 +1,6 @@
 package flipper.composite;
 
+import flipper.commands.CommandHistory;
 import flipper.commands.HitCommand;
 import flipper.commands.ScoreCommand;
 
@@ -16,10 +17,13 @@ public class FlipperElements implements FlipperElement{
 
     private Integer nextElementToHit;
 
+    private CommandHistory commandHistory;
+
 
     public FlipperElements() {
         this.children           = new ArrayList<>();
         this.rng                = new Random();
+        this.commandHistory     = new CommandHistory();
         generateNextHit();
     }
 
@@ -43,11 +47,26 @@ public class FlipperElements implements FlipperElement{
 
     @Override
     public void hit() {
-        new HitCommand(children.get(nextElementToHit)).execute();
+        var command = new HitCommand(children.get(nextElementToHit));
+        command.execute();
+        this.commandHistory.addCommand(command);
     }
 
     @Override
     public void score() {
-        new ScoreCommand(children.get(nextElementToHit)).execute();
+        var command = new ScoreCommand(children.get(nextElementToHit));
+        command.execute();
+        this.commandHistory.addCommand(command);
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+
+        for(AbstractFlipperElement element : this.children) {
+            output += element.toString() + "\n";
+        }
+
+        return output;
     }
 }

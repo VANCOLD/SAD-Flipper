@@ -2,14 +2,17 @@ package flipper.composite;
 
 import flipper.commands.HitCommand;
 import flipper.commands.ScoreCommand;
+import flipper.visitor.ScoreVisitor;
+import flipper.visitor.Visitor;
 
 public class AbstractFlipperElement implements FlipperElement{
 
-    public Boolean hit;
+    public Boolean ledsOn;
 
-    public Integer scoreTotal;
+    public Integer totalScore;
 
     public Integer scoreIncrease;
+
 
     private final HitCommand hitCommand;
 
@@ -20,23 +23,41 @@ public class AbstractFlipperElement implements FlipperElement{
     }
 
     public AbstractFlipperElement(Integer scoreIncrease) {
-        this.hit            = false;
-        this.scoreTotal     = 0;
+
+        this.totalScore     = 0;
+        this.ledsOn = false;
         this.scoreIncrease  = scoreIncrease;
         this.hitCommand     = new HitCommand(this);
         this.scoreCommand   = new ScoreCommand(this);
+
     }
 
 
     @Override
     public void hit() {
-        System.out.println(Class.class.getName() + " has been hit!");
-        this.hit = !hit;
+        System.out.println(this.getClass().getSimpleName() + " has been hit!");
+        this.ledsOn = !ledsOn;
         this.score();
     }
 
     @Override
     public void score() {
-        this.scoreTotal = scoreTotal + scoreIncrease;
+        this.totalScore = totalScore + scoreIncrease;
+    }
+
+    public void accept(Visitor visitor) {
+
+        if(visitor instanceof ScoreVisitor) {
+            var scoreVisitor = ((ScoreVisitor) visitor);
+            scoreVisitor.setScoreTotal(scoreVisitor.getScoreTotal() + this.totalScore);
+        } else {
+            this.ledsOn = false;
+            this.totalScore     = 0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "[ " + this.getClass().getSimpleName() + " | hit: " + ledsOn + " | total score: " + totalScore + " | score increase: " + scoreIncrease + " ]";
     }
 }

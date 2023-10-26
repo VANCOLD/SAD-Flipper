@@ -38,7 +38,7 @@ public class Ramp extends AbstractFlipperElement implements Mediator {
 
     @Override
     public void notify(AbstractFlipperElement sender, Boolean hit) {
-        this.interactable = this.targets.stream().allMatch(target -> target.hit);
+        this.interactable = this.targets.stream().allMatch(target -> target.ledsOn);
     }
 
     @Override
