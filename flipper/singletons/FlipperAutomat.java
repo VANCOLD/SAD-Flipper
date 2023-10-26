@@ -1,9 +1,13 @@
 package flipper.singletons;
 
 import flipper.composite.*;
+import flipper.enums.Inputs;
+import flipper.factories.FontFactory;
+import flipper.factories.implementations.PinballFontFactory;
 import flipper.states.NoCreditState;
 import flipper.states.State;
 
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class FlipperAutomat {
@@ -18,12 +22,16 @@ public class FlipperAutomat {
 
     private FlipperElements flipperElements;
 
+    private FontFactory fontFactory;
+
+    private LinkedList<Ball> balls;
+
     private FlipperAutomat() {
         this.credits            = 0;
         this.gameState          = new NoCreditState(this);
         this.ioManager          = IOManager.createManager();
         this.flipperElements    = new FlipperElements();
-
+        this.fontFactory        = new PinballFontFactory();
         this.setup();
     }
 
@@ -59,7 +67,47 @@ public class FlipperAutomat {
 
 
     public void run() {
-        System.out.println(this.flipperElements.toString());
 
+        //System.out.println(this.flipperElements.toString());
+        System.out.println();
+        System.out.println(this.fontFactory.createFont().getMessage());
+        System.out.println("The pinball machine lights up, you get all excited, a prompt flashes on it's screen, it reads:\n"+
+                            "Type credits to add credits to the machine\n" +
+                            "Type start to start a round of pinball (credits needed)");
+
+        while ( true ) {
+
+            String line         = this.ioManager.readLine().toLowerCase();
+            Inputs inputValue   = Inputs.getInputValue(line);
+
+            switch(inputValue) {
+
+                case START: {
+                    this.gameState.pressStart();
+                    break;
+                }
+
+                case CREDITS: {
+                    this.gameState.addCredits(1);
+                    break;
+                }
+
+                case PRESS: {
+                    break;
+                }
+
+                case EXIT: {
+                    this.gameState.exit();
+                }
+
+                case INVALID:
+                    System.out.println("INVALID INPUT!:\n");
+                case HELP: {
+                    this.gameState.help();
+                    break;
+                }
+
+            }
+        }
     }
 }

@@ -14,4 +14,17 @@ public class ReadyState extends AbstractState {
         System.out.println("Starting a round of flipper! Current credits: " + this.credits);
         this.flipperAutomat.changeState(new PlayingState(this.flipperAutomat));
     }
+
+    @Override
+    public void help() {
+        System.out.println("Type start to start a round.\n" +
+                            "Type credits to add another credit to the machine.\n" +
+                            "Type exit to get your credits back and exit the game!");
+    }
+
+    @Override
+    public void exit() {
+        System.out.println("Returning credits.... *katching katching*");
+        System.exit(1);
+    }
 }

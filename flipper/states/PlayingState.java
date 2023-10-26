@@ -13,4 +13,15 @@ public class PlayingState extends AbstractState {
         System.out.println("This game was created by: " +
             "Florian Grafl, Raja Abdulhadi & Polak Rene :).\n Thanks for playing! ");
     }
+
+    @Override
+    public void help() {
+        System.out.println("Type start to see who worked on the game.\n" +
+                           "Type credits to add another credit to the machine.");
+    }
+
+    @Override
+    public void exit() {
+        System.out.println("You can not exit the game while playing!");
+    }
 }
