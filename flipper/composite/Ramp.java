@@ -22,8 +22,6 @@ public class Ramp extends AbstractFlipperElement implements Mediator {
     public void score() {
         if(interactable) {
             super.score();
-        } else {
-            System.out.println("Ramp is currently not active!");
         }
     }
 
@@ -32,13 +30,16 @@ public class Ramp extends AbstractFlipperElement implements Mediator {
         if(interactable) {
             super.hit();
         } else {
-            System.out.println("Ramp is currently not active");
+            System.out.println("Ramp is currently not active!");
         }
     }
 
     @Override
     public void notify(AbstractFlipperElement sender, Boolean hit) {
         this.interactable = this.targets.stream().allMatch(target -> target.ledsOn);
+        if(interactable) {
+            System.out.println("Ramp has been activated, lowering now!");
+        }
     }
 
     @Override

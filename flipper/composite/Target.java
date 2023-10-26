@@ -5,6 +5,7 @@ import flipper.mediator.Mediator;
 public class Target extends AbstractFlipperElement {
 
     private final Mediator mediator;
+
     public Target(Integer scoreIncrease, Ramp ramp) {
         super(scoreIncrease);
         this.mediator = ramp;

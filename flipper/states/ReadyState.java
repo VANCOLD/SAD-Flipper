@@ -10,8 +10,8 @@ public class ReadyState extends AbstractState {
 
     @Override
     public void pressStart() {
-        this.credits -= 1;
-        System.out.println("Starting a round of flipper! Current credits: " + this.credits);
+        this.flipperAutomat.setCredits(this.flipperAutomat.getCredits() - 1);
+        System.out.println("Starting a round of flipper! Current credits: " + this.flipperAutomat.getCredits());
         this.flipperAutomat.changeState(new PlayingState(this.flipperAutomat));
     }
 

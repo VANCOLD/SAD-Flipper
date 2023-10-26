@@ -1,5 +1,6 @@
 package flipper.composite;
 
+import flipper.commands.AbstractCommand;
 import flipper.commands.CommandHistory;
 import flipper.commands.HitCommand;
 import flipper.commands.ScoreCommand;
@@ -21,10 +22,10 @@ public class FlipperElements implements FlipperElement{
 
 
     public FlipperElements() {
-        this.children           = new ArrayList<>();
+        this.children           = new ArrayList<>(5);
         this.rng                = new Random();
         this.commandHistory     = new CommandHistory();
-        generateNextHit();
+        this.nextElementToHit   = 0;
     }
 
 
@@ -41,8 +42,12 @@ public class FlipperElements implements FlipperElement{
         }
     }
 
+    public List<AbstractFlipperElement> getChildren() {
+        return children;
+    }
+
     public void generateNextHit() {
-        this.nextElementToHit = this.rng.nextInt();
+        this.nextElementToHit = this.rng.nextInt(0,this.children.size());
     }
 
     @Override
@@ -65,6 +70,18 @@ public class FlipperElements implements FlipperElement{
 
         for(AbstractFlipperElement element : this.children) {
             output += element.toString() + "\n";
+        }
+
+        return output;
+    }
+
+    public String printCommandHistory() {
+
+        String output = "";
+
+        for(AbstractCommand command : this.commandHistory.getCommandList()) {
+            output += "[COMMAND]: " + this.commandHistory.getCommandList().indexOf(command) + "# "
+                + command.getClass().getSimpleName() +" interacted with " + command.getTarget().getClass().getSimpleName()  + "\n";
         }
 
         return output;

@@ -4,7 +4,12 @@ import flipper.composite.AbstractFlipperElement;
 
 public class ScoreVisitor implements Visitor {
 
+
     private Integer scoreTotal;
+
+    public ScoreVisitor() {
+        this.scoreTotal = 0;
+    }
 
     public Integer getScoreTotal() {
         return scoreTotal;

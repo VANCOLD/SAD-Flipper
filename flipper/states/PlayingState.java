@@ -22,6 +22,6 @@ public class PlayingState extends AbstractState {
 
     @Override
     public void exit() {
-        System.out.println("You can not exit the game while playing!");
+        System.out.println("You can not exit the game while playing");
     }
 }

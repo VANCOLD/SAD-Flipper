@@ -4,15 +4,22 @@ import flipper.composite.*;
 import flipper.enums.Inputs;
 import flipper.factories.FontFactory;
 import flipper.factories.implementations.PinballFontFactory;
+import flipper.states.EndState;
 import flipper.states.NoCreditState;
+import flipper.states.PlayingState;
 import flipper.states.State;
+import flipper.visitor.ResetVisitor;
+import flipper.visitor.ScoreVisitor;
 
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Random;
 
 public class FlipperAutomat {
 
     private static final FlipperAutomat flipperAutomat = null;
+
+    public static Boolean DEBUG;
 
     private State gameState;
 
@@ -26,18 +33,34 @@ public class FlipperAutomat {
 
     private LinkedList<Ball> balls;
 
+    private Ball currentBall;
+
+    private Integer totalScore;
+
+
     private FlipperAutomat() {
         this.credits            = 0;
         this.gameState          = new NoCreditState(this);
         this.ioManager          = IOManager.createManager();
         this.flipperElements    = new FlipperElements();
         this.fontFactory        = new PinballFontFactory();
+        this.currentBall        = null;
+        this.balls              = new LinkedList<>();
+        this.totalScore         = 0;
         this.setup();
     }
 
     public static FlipperAutomat createFlipperAutomat() {
         return Objects.requireNonNullElseGet(
             FlipperAutomat.flipperAutomat, FlipperAutomat::new);
+    }
+
+    public Integer getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Integer credits) {
+        this.credits = credits;
     }
 
     public void changeState(State state) {
@@ -63,12 +86,16 @@ public class FlipperAutomat {
         this.flipperElements.add(target1);
         this.flipperElements.add(target2);
         this.flipperElements.add(target3);
+
+        this.balls = Ball.createBalls();
     }
 
 
-    public void run() {
+    public void run() throws InterruptedException {
 
-        //System.out.println(this.flipperElements.toString());
+        if(FlipperAutomat.DEBUG)
+            System.out.println(this.flipperElements.toString());
+
         System.out.println();
         System.out.println(this.fontFactory.createFont().getMessage());
         System.out.println("The pinball machine lights up, you get all excited, a prompt flashes on it's screen, it reads:\n"+
@@ -76,6 +103,11 @@ public class FlipperAutomat {
                             "Type start to start a round of pinball (credits needed)");
 
         while ( true ) {
+
+            if( (this.gameState instanceof PlayingState) ) {
+                tick();
+                continue;
+            }
 
             String line         = this.ioManager.readLine().toLowerCase();
             Inputs inputValue   = Inputs.getInputValue(line);
@@ -88,7 +120,7 @@ public class FlipperAutomat {
                 }
 
                 case CREDITS: {
-                    this.gameState.addCredits(1);
+                    this.gameState.addCredits();
                     break;
                 }
 
@@ -110,4 +142,56 @@ public class FlipperAutomat {
             }
         }
     }
+
+    private void tick() throws InterruptedException {
+
+        if(balls.isEmpty() && currentBall == null) {
+
+            System.out.println("Total game score: " + totalScore);
+            System.out.println("Game lost! Wanna try again?");
+            this.changeState(new EndState(this));
+            this.totalScore  = 0;
+            this.balls       = Ball.createBalls();
+            this.currentBall = this.balls.pop();
+            return;
+
+        }
+
+        if(currentBall == null) {
+
+            this.currentBall =  this.balls.pop();
+
+            this.fontFactory = currentBall.getFontFactory();
+            System.out.println(this.fontFactory.createFont().getMessage());
+        }
+
+        this.flipperElements.hit();
+        this.flipperElements.score();
+        this.flipperElements.generateNextHit();
+
+        Random rng = new Random();
+        var val = rng.nextInt(0,101);
+
+        if( val <= 5) {
+
+            this.currentBall = null;
+
+            ScoreVisitor scoreVisitor = new ScoreVisitor();
+            ResetVisitor resetVisitor = new ResetVisitor();
+
+            for(AbstractFlipperElement element : this.flipperElements.getChildren() ) {
+                element.accept(scoreVisitor);
+                element.accept(resetVisitor);
+            }
+            this.totalScore += scoreVisitor.getScoreTotal();
+            System.out.println("Ball loss!");
+            System.out.println("Total score: " + scoreVisitor.getScoreTotal());
+
+            if(FlipperAutomat.DEBUG)
+                System.out.println(flipperElements.printCommandHistory());
+        }
+
+        Thread.sleep(1000);
+    }
+
 }

@@ -2,7 +2,7 @@ package flipper.enums;
 
 public enum Inputs {
 
-    CREDITS("start"), START("start"), PRESS("press"), HELP("help"), EXIT("exit"), INVALID(""6);
+    CREDITS("credits"), START("start"), PRESS("press"), HELP("help"), EXIT("exit"), INVALID("");
 
     private String input;
 
@@ -13,7 +13,7 @@ public enum Inputs {
 
     public static Inputs getInputValue(String input) {
         try {
-            return Inputs.valueOf(input);
+            return Inputs.valueOf(input.toUpperCase());
         } catch( IllegalArgumentException ex) {
             return Inputs.INVALID;
         }

@@ -6,15 +6,13 @@ public abstract class AbstractState implements State {
 
     protected FlipperAutomat flipperAutomat;
 
-    protected static Integer credits;
-
     public AbstractState(FlipperAutomat flipperAutomat) {
         this.flipperAutomat = flipperAutomat;
     }
 
     @Override
-    public void addCredits(Integer credits) {
-        AbstractState.credits += credits;
-        System.out.println("The credits counter was increase, the credits total is: " + AbstractState.credits);
+    public void addCredits() {
+        this.flipperAutomat.setCredits(this.flipperAutomat.getCredits() + 1);
+        System.out.println("The credits counter was increase, the credits total is: " + this.flipperAutomat.getCredits());
     }
 }

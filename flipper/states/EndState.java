@@ -10,7 +10,11 @@ public class EndState extends AbstractState {
 
     @Override
     public void pressStart() {
-        System.out.println("Insert credits to continue or type exit to stop playing");
+        if(flipperAutomat.getCredits() > 0) {
+            flipperAutomat.changeState(new PlayingState(flipperAutomat));
+        } else {
+            System.out.println("Insert credits to continue or type exit to stop playing");
+        }
     }
 
     @Override
