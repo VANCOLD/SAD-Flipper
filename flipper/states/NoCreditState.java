@@ -11,7 +11,7 @@ public class NoCreditState extends AbstractState {
     @Override
     public void pressStart() {
         if(flipperAutomat.getCredits() == 0) {
-            System.out.println("There are credits in the pinball-machine!\nPlease type credits to add more credits to the machine");
+            System.out.println("There no are credits in the pinball-machine!\nPlease type credits to add more credits to the machine");
         } else {
             System.out.println("Game started! You can continue inserting credits or type start to start playing!");
             this.flipperAutomat.changeState(new ReadyState(this.flipperAutomat));
@@ -28,6 +28,10 @@ public class NoCreditState extends AbstractState {
 
     @Override
     public void exit() {
+
+        if(flipperAutomat.getCredits() != 0)
+            System.out.println("Returning credits.... *katching katching*");
+
         System.out.println("Maybe next time ;)");
         System.exit(1);
     }

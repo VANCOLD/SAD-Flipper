@@ -3,13 +3,9 @@ package flipper.singletons;
 import flipper.composite.*;
 import flipper.enums.Inputs;
 import flipper.factories.FontFactory;
-import flipper.factories.fonts.GameOverFont;
 import flipper.factories.implementations.GameOverFontFactory;
 import flipper.factories.implementations.PinballFontFactory;
-import flipper.states.EndState;
-import flipper.states.NoCreditState;
-import flipper.states.PlayingState;
-import flipper.states.State;
+import flipper.states.*;
 import flipper.visitor.ResetVisitor;
 import flipper.visitor.ScoreVisitor;
 
@@ -21,7 +17,6 @@ public class FlipperAutomat {
 
     private static final FlipperAutomat flipperAutomat = null;
 
-    public static Integer ELEMENT_COUNT;
     public static Boolean DEBUG;
 
     private State gameState;
@@ -39,6 +34,7 @@ public class FlipperAutomat {
     private Ball currentBall;
 
     private Integer totalScore;
+
 
 
     private FlipperAutomat() {
@@ -106,7 +102,8 @@ public class FlipperAutomat {
         ioManager.printMessage("""
             The pinball machine lights up, you get all excited, a prompt flashes on it's screen, it reads:
             Type credits to add credits to the machine
-            Type start to start a round of pinball (credits needed)""");
+            Type start to start a round of pinball (credits needed)
+            Type help to see what commands are available to you!""");
 
         while ( true ) {
 
@@ -115,37 +112,42 @@ public class FlipperAutomat {
                 continue;
             }
 
-            String line         = this.ioManager.readLine().toLowerCase();
-            Inputs inputValue   = Inputs.getInputValue(line);
+            pollInput();
+        }
+    }
 
-            switch(inputValue) {
+    private void pollInput() {
 
-                case START: {
-                    this.gameState.pressStart();
-                    break;
-                }
+        String line         = this.ioManager.readLine().toLowerCase();
+        Inputs inputValue   = Inputs.getInputValue(line);
 
-                case CREDITS: {
-                    this.gameState.addCredits();
-                    break;
-                }
+        switch(inputValue) {
 
-                case PRESS: {
-                    break;
-                }
-
-                case EXIT: {
-                    this.gameState.exit();
-                }
-
-                case INVALID:
-                    ioManager.printMessage("INVALID INPUT!:\n");
-                case HELP: {
-                    this.gameState.help();
-                    break;
-                }
-
+            case START: {
+                this.gameState.pressStart();
+                break;
             }
+
+            case CREDITS: {
+                this.gameState.addCredits();
+                break;
+            }
+
+            case PRESS: {
+                break;
+            }
+
+            case EXIT: {
+                this.gameState.exit();
+            }
+
+            case INVALID:
+                ioManager.printMessage("INVALID INPUT!:\n");
+            case HELP: {
+                this.gameState.help();
+                break;
+            }
+
         }
     }
 
@@ -158,7 +160,7 @@ public class FlipperAutomat {
             this.changeState(new EndState(this));
             this.totalScore  = 0;
             this.balls       = Ball.createBalls();
-            this.currentBall = this.balls.pop();
+            this.gameState.help();
             return;
 
         }
@@ -189,9 +191,12 @@ public class FlipperAutomat {
                 element.accept(scoreVisitor);
                 element.accept(resetVisitor);
             }
+
             this.totalScore += scoreVisitor.getScoreTotal();
+
             ioManager.printMessage("Ball loss!");
-            ioManager.printMessage("Total score: " + scoreVisitor.getScoreTotal());
+            ioManager.printMessage("Total score: " + scoreVisitor.getScoreTotal() + "\n");
+
             this.fontFactory = new GameOverFontFactory();
             ioManager.printMessage(this.fontFactory.createFont().getMessage());
 
@@ -201,5 +206,4 @@ public class FlipperAutomat {
 
         Thread.sleep(1000);
     }
-
 }

@@ -27,7 +27,6 @@ public class AbstractFlipperElement implements FlipperElement{
     public void hit() {
         System.out.println(this.getClass().getSimpleName() + " has been hit!");
         this.ledsOn = !ledsOn;
-        this.score();
     }
 
     @Override

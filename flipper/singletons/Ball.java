@@ -6,14 +6,13 @@ import flipper.factories.implementations.Ball2FontFactory;
 import flipper.factories.implementations.Ball3FontFactory;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class Ball {
-    private static final Ball ball1 = null;
+    private static Ball ball1;
 
-    private static final Ball ball2 = null;
+    private static Ball ball2;
 
-    private static final Ball ball3 = null;
+    private static Ball ball3;
 
     private static Integer index = 1;
 
@@ -29,9 +28,13 @@ public class Ball {
 
         LinkedList<Ball> ballQueue = new LinkedList<>();
 
-        ballQueue.add(Objects.requireNonNullElseGet(Ball.ball1, Ball::new));
-        ballQueue.add(Objects.requireNonNullElseGet(Ball.ball2, Ball::new));
-        ballQueue.add(Objects.requireNonNullElseGet(Ball.ball3, Ball::new));
+        ball1 = ball1 == null ? new Ball() : ball1;
+        ball2 = ball2 == null ? new Ball() : ball2;
+        ball3 = ball3 == null ? new Ball() : ball3;
+
+        ballQueue.add(ball1);
+        ballQueue.add(ball2);
+        ballQueue.add(ball3);
 
         return ballQueue;
     }
@@ -42,7 +45,6 @@ public class Ball {
             case 1 -> new Ball1FontFactory();
             case 2 -> new Ball2FontFactory();
             case 3 -> new Ball3FontFactory();
-            default -> null;
         };
 
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHistory {
-    private List<AbstractCommand> commandList;
+    private final List<AbstractCommand>  commandList;
 
     public CommandHistory() {
         this.commandList = new ArrayList<>();
