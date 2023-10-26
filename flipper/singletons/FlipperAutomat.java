@@ -21,6 +21,7 @@ public class FlipperAutomat {
 
     private static final FlipperAutomat flipperAutomat = null;
 
+    public static Integer ELEMENT_COUNT;
     public static Boolean DEBUG;
 
     private State gameState;
