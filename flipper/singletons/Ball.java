@@ -45,6 +45,7 @@ public class Ball {
             case 1 -> new Ball1FontFactory();
             case 2 -> new Ball2FontFactory();
             case 3 -> new Ball3FontFactory();
+            default -> null;
         };
 
     }
